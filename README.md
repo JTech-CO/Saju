@@ -10,7 +10,8 @@
 **주요 기능**
 - **사주 입력 UI**: 평생사주, 토정비결, 궁합, 이름풀이, 택일/이사 메뉴별로 다른 입력 폼을 표시
 - **Grok 연동 사주풀이**: 메뉴와 입력값에 따라 다른 System Prompt를 구성해 Grok API로 텍스트를 생성
-- **용어 간소화 모드**: 명리학 전문 용어를 정규식으로 감지해, 일반 사용자가 읽기 쉬운 현대어로 치환
+- **출력 정제 로직**: Grok 응답에 섞인 마크다운, 영문 단어, 과도한 반복 표현 등을 클라이언트에서 후처리로 정리
+- **용어 간소화 모드**: 명리학 전문 용어를 정규식으로 감지해 현대어로 치환하고, 간소화 모드에서는 한자를 모두 제거해 순수 한글 설명만 보여줌
 - **완전 정적 호스팅**: GitHub Pages, Netlify 등 어디서든 index.html 단일 진입점으로 배포 가능
 
 ## 2. 기술 스택 (Tech Stack)
@@ -67,7 +68,7 @@ npx serve .
   ```js
   var GROK_PROXY_URL = (typeof window !== 'undefined' && window.GROK_PROXY_URL)
       ? window.GROK_PROXY_URL
-      : 'https://your-grok-proxy.workers.dev/chat';
+      : 'https://saju.mjwbryan131.workers.dev/chat'; // 예시: 현재 배포용 Worker URL
   ```
 
 - **운영 환경에서 설정하는 방법**
@@ -84,8 +85,8 @@ npx serve .
 ```text
 정통 명리 사주풀이/
 ├── index.html                 # 메인 진입점 (GitHub Pages 루트)
-├── README_Info.md             # 안내 및 설명용 README
-├── README.md                  # README
+├── README_Info.md             # 서비스 이용자를 위한 안내문
+├── README.md                  # (현재 파일) 개발자용 README
 ├── css/
 │   └── style.css              # 전체 스타일, 레이아웃, 타이포그래피
 ├── js/
@@ -116,6 +117,5 @@ npx serve .
   ```
 
 ## 6. 정보 (Info)
-
 
 - **License**: MIT 라이센스
