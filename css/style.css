@@ -1,0 +1,269 @@
+/* 폰트: 명조체 */
+@import url('https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@400;700;800&display=swap');
+
+/* 기본 리셋 및 한지 느낌 배경 */
+body {
+    margin: 0;
+    padding: 0;
+    /* 미색 배경 + SVG 노이즈 필터로 한지 질감 */
+    background-color: #f4ebd8;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.06'/%3E%3C/svg%3E");
+    font-family: 'Nanum Myeongjo', 'Batang', 'AppleMyungjo', serif;
+    color: #2c251d;
+    line-height: 1.6;
+}
+
+.container {
+    width: 850px;
+    margin: 0 auto;
+    background-color: rgba(255, 255, 255, 0.65);
+    border-left: 1px solid #cbb8a0;
+    border-right: 1px solid #cbb8a0;
+    min-height: 100vh;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
+}
+
+header {
+    text-align: center;
+    padding: 40px 0 20px 0;
+    border-bottom: 3px double #7a4b3a;
+}
+
+header h1 {
+    font-size: 32px;
+    font-weight: 800;
+    color: #4a2f24;
+    letter-spacing: 5px;
+    margin: 0;
+}
+
+header h2.sub-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: #5a3d2b;
+    margin: 8px 0 10px 0;
+    letter-spacing: 3px;
+}
+
+header p {
+    font-size: 14px;
+    color: #665243;
+    margin-top: 10px;
+    letter-spacing: 1px;
+}
+
+/* 네비게이션 메뉴 */
+nav {
+    background-color: #e6d8c3;
+    border-bottom: 1px solid #7a4b3a;
+}
+
+nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+}
+
+nav ul li {
+    border-right: 1px dotted #a88d75;
+}
+
+nav ul li:last-child {
+    border-right: none;
+}
+
+nav ul li a {
+    display: block;
+    padding: 12px 30px;
+    text-decoration: none;
+    color: #3b261d;
+    font-weight: 700;
+    font-size: 15px;
+}
+
+nav ul li a:hover, nav ul li a.active {
+    background-color: #7a4b3a;
+    color: #ffffff;
+}
+
+.content {
+    padding: 40px 50px;
+}
+
+.section-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #4a2f24;
+    border-left: 4px solid #7a4b3a;
+    padding-left: 10px;
+    margin-bottom: 20px;
+}
+
+.intro-text {
+    font-size: 14px;
+    margin-bottom: 30px;
+    padding: 15px;
+    background-color: #fdfaf6;
+    border: 1px solid #e0d0bd;
+    text-align: justify;
+}
+
+/* 폼 테이블 */
+.saju-form-table {
+    width: 100%;
+    border-collapse: collapse;
+    border-top: 2px solid #7a4b3a;
+    border-bottom: 2px solid #7a4b3a;
+    margin-bottom: 30px;
+}
+
+.saju-form-table th, .saju-form-table td {
+    border-bottom: 1px solid #d4c5b3;
+    padding: 12px 15px;
+    font-size: 14px;
+}
+
+.saju-form-table th {
+    background-color: #f0e6d5;
+    color: #4a2f24;
+    width: 150px;
+    text-align: left;
+    font-weight: 700;
+}
+
+.saju-form-table td {
+    background-color: #ffffff;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.section-divider th {
+    background-color: #e6d8c3;
+    text-align: center;
+    letter-spacing: 2px;
+    border-top: 2px dashed #a88d75;
+}
+
+input[type="text"], select {
+    padding: 4px 6px;
+    font-family: 'Batang', 'Nanum Myeongjo', serif;
+    border: 1px solid #a88d75;
+    background-color: #fdfaf6;
+    font-size: 14px;
+}
+
+input[type="text"]:focus, select:focus {
+    outline: none;
+    border-color: #7a4b3a;
+    background-color: #ffffff;
+}
+
+.radio-group label {
+    margin-right: 15px;
+    cursor: pointer;
+}
+
+.btn-submit-area {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.btn-submit {
+    background-color: #613b2c;
+    color: #ffffff;
+    border: 1px solid #3b2016;
+    padding: 12px 50px;
+    font-family: 'Nanum Myeongjo', serif;
+    font-size: 18px;
+    font-weight: 700;
+    cursor: pointer;
+    letter-spacing: 2px;
+    background-image: linear-gradient(to bottom, #7a4b3a, #522f22);
+}
+
+.btn-submit:hover {
+    background-image: linear-gradient(to bottom, #8a5744, #613b2c);
+}
+
+.btn-submit:active {
+    background-image: linear-gradient(to bottom, #522f22, #7a4b3a);
+}
+
+#result-area {
+    display: none;
+    border: 2px solid #a88d75;
+    background-color: #fcfaf5;
+    padding: 30px;
+    margin-top: 20px;
+}
+
+.loading-text {
+    text-align: center;
+    font-size: 16px;
+    color: #7a4b3a;
+    font-weight: 700;
+    margin: 40px 0;
+    letter-spacing: 1px;
+    animation: blink 2s infinite;
+}
+
+@keyframes blink {
+    0% { opacity: 1; }
+    50% { opacity: 0.5; }
+    100% { opacity: 1; }
+}
+
+.result-content {
+    font-size: 15px;
+    line-height: 1.8;
+    text-align: justify;
+    white-space: pre-wrap;
+}
+
+.result-header-container {
+    position: relative;
+    text-align: center;
+    border-bottom: 1px solid #cbb8a0;
+    padding-bottom: 15px;
+    margin-bottom: 25px;
+}
+
+.result-header {
+    font-size: 22px;
+    font-weight: 800;
+    color: #4a2f24;
+    display: inline-block;
+    margin: 0;
+}
+
+.btn-simplify {
+    position: absolute;
+    right: 0;
+    bottom: 15px;
+    background-color: #f4ebd8;
+    color: #5a3d2b;
+    border: 1px solid #cbb8a0;
+    padding: 5px 12px;
+    font-family: 'Batang', 'Nanum Myeongjo', serif;
+    font-size: 12px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-simplify:hover {
+    background-color: #e6d8c3;
+}
+
+footer {
+    text-align: center;
+    padding: 30px 0;
+    font-size: 12px;
+    color: #8c7b6d;
+    border-top: 1px solid #e0d0bd;
+    background-color: #f4ebd8;
+}
