@@ -5,6 +5,52 @@ let currentMenu = 'lifetime';
 let originalResultText = '';
 let isSimplified = false;
 
+/**
+ * Grok 응답에 섞여 올 수 있는 마크다운/HTML/영문/과도한 반복 표현을 정리
+ */
+function stripMarkdownFormatting(text) {
+    if (!text) return '';
+    let s = String(text);
+
+    // 제목 기호 (#, ## 등) 제거
+    s = s.replace(/^#{1,6}\s+/gm, '');
+
+    // 이미지/링크: ![alt](url), [text](url) -> alt 또는 text만 남김
+    s = s.replace(/!\[([^\]]*)\]\([^)]+\)/g, '$1');
+    s = s.replace(/\[([^\]]+)\]\([^)]+\)/g, '$1');
+
+    // 굵게/기울임: **text**, *text*, __text__, _text_ -> 텍스트만
+    s = s.replace(/(\*\*|__)(.*?)\1/g, '$2');
+    s = s.replace(/(\*|_)(.*?)\1/g, '$2');
+
+    // 인라인 코드: `code` -> code
+    s = s.replace(/`([^`]+)`/g, '$1');
+
+    // 인용문: > text -> text
+    s = s.replace(/^\s*>\s?/gm, '');
+
+    // 글머리 기호/번호 목록: "- ", "* ", "1. " 등 -> "• "로 통일
+    s = s.replace(/^[\s>*-]*[-*+]\s+/gm, '• ');
+    s = s.replace(/^\s*\d+\.\s+/gm, '• ');
+
+    // 수평선(---, ***) 제거
+    s = s.replace(/^[-*_]{3,}\s*$/gm, '');
+
+    // 3글자 이상 연속 영문 단어 제거 (impulsiveness 등)
+    s = s.replace(/[A-Za-z]{3,}/g, '');
+
+    // '사주사주', '운세운세' 등 같은 한글 단어 반복 제거 (2~4글자 기준)
+    s = s.replace(/([가-힣]{2,4})\1+/g, '$1');
+
+    // 연속 공백을 하나로
+    s = s.replace(/[ \t]{2,}/g, ' ');
+
+    // 불필요한 빈 줄 여러 개를 두 줄 이하로 축소
+    s = s.replace(/\n{3,}/g, '\n\n');
+
+    return s.trim();
+}
+
 document.addEventListener('DOMContentLoaded', function () {
     populateDateSelects('birthYear', 'birthMonth', 'birthDay', 1990);
     populateDateSelects('partnerBirthYear', 'partnerBirthMonth', 'partnerBirthDay', 1992);
@@ -91,7 +137,8 @@ document.getElementById('saju-form').addEventListener('submit', async function (
 
     try {
         const userMessage = buildUserMessage(requestData);
-        const sajuResult = await requestGrokChat(requestData.systemPromptTemplate, userMessage);
+        const sajuRawResult = await requestGrokChat(requestData.systemPromptTemplate, userMessage);
+        const sajuResult = stripMarkdownFormatting(sajuRawResult);
 
         let titleStr = '';
         if (currentMenu === 'lifetime') titleStr = `${name} 님의 평생 사주 분석 결과`;
@@ -161,7 +208,11 @@ document.getElementById('btn-simplify').addEventListener('click', async function
             .replace(/일진\(日辰\)/g, '그날그날의 운세')
             .replace(/상충\(相沖\)/g, '강하게 부딪혀 깨지는 기운');
 
-        resultText.innerHTML = `<div style="background-color: #fdfaf6; border: 1px dashed #cbb8a0; padding: 15px; margin-bottom: 20px; font-size: 14px; color: #665243;"><b>※ AI 용어 간소화 모드</b>: 어려운 한자어와 전문 명리 용어를 이해하기 쉬운 말로 풀어서 설명합니다.</div>${easyText}`;
+        // 간소화 모드에서는 한자가 나오지 않도록 남은 한자 제거
+        let simplifiedText = easyText.replace(/[\u4e00-\u9fff\u3400-\u4dbf]/g, '');
+        simplifiedText = simplifiedText.replace(/  +/g, ' ').trim();
+
+        resultText.innerHTML = `<div style="background-color: #fdfaf6; border: 1px dashed #cbb8a0; padding: 15px; margin-bottom: 20px; font-size: 14px; color: #665243;"><b>※ AI 용어 간소화 모드</b>: 어려운 한자어와 전문 명리 용어를 이해하기 쉬운 말로 풀어서 설명합니다.</div>${simplifiedText}`;
         isSimplified = true;
     } else {
         this.textContent = '어려운 용어 AI 간소화';
