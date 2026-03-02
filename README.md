@@ -84,8 +84,8 @@ npx serve .
 ```text
 정통 명리 사주풀이/
 ├── index.html                 # 메인 진입점 (GitHub Pages 루트)
-├── README_Default.md          # 일반 사용자용 안내
-├── README_Dev.md              # 개발자용 README 템플릿
+├── README_Info.md             # 안내 및 설명용 README
+├── README.md                  # README
 ├── css/
 │   └── style.css              # 전체 스타일, 레이아웃, 타이포그래피
 ├── js/
@@ -116,5 +116,6 @@ npx serve .
   ```
 
 ## 6. 정보 (Info)
+
 
 - **License**: MIT 라이센스
