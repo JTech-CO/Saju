@@ -176,10 +176,44 @@
         </form>
 
         <div id="result-area">
-            <div id="loading-state" class="loading-text" style="display: none;">
-                명식을 세우고 천간과 지지의 조화를 분석 중입니다.<br>잠시만 기다려 주십시오...
+            <div id="saju-loader" style="display: none;">
+                <div class="loader-circle">
+                    <div class="arrows">
+                        <svg viewBox="-80 -65 160 130" width="160" height="130" style="position:absolute">
+                            <line class="al" id="al-0" x1="-72" y1="-32" x2="-12" y2="-62"/>
+                            <line class="al" id="al-1" x1="12"  y1="-62" x2="72"  y2="-32"/>
+                            <line class="al" id="al-2" x1="78"  y1="-12" x2="62"  y2="44"/>
+                            <line class="al" id="al-3" x1="42"  y1="56"  x2="-42" y2="56"/>
+                            <line class="al" id="al-4" x1="-62" y1="44"  x2="-78" y2="-12"/>
+                        </svg>
+                    </div>
+                    <div class="oh oh-w"><span class="h">木</span><span class="l">목</span></div>
+                    <div class="oh oh-f"><span class="h">火</span><span class="l">화</span></div>
+                    <div class="oh oh-e"><span class="h">土</span><span class="l">토</span></div>
+                    <div class="oh oh-m"><span class="h">金</span><span class="l">금</span></div>
+                    <div class="oh oh-wa"><span class="h">水</span><span class="l">수</span></div>
+                    <div class="ink">
+                        <div class="ink-ring"></div>
+                        <div class="ink-d ink-d1"></div>
+                        <div class="ink-d ink-d2"></div>
+                        <div class="ink-d ink-d3"></div>
+                        <div class="ink-s ink-s1"></div>
+                        <div class="ink-s ink-s2"></div>
+                        <div class="ink-p"></div>
+                        <div class="ink-p"></div>
+                        <div class="ink-p"></div>
+                        <div class="ink-p"></div>
+                        <div class="ink-p"></div>
+                        <div class="ink-p"></div>
+                        <div class="ink-ch">命</div>
+                    </div>
+                </div>
+                <div class="msg">
+                    <p>사주를 풀이하고 있습니다<span class="dots"></span></p>
+                    <div class="sub" id="saju-loader-text"></div>
+                </div>
             </div>
-            
+
             <div id="result-display" style="display: none;">
                 <div class="result-header-container">
                     <div class="result-header" id="result-title">홍길동 님의 사주 분석 결과</div>
