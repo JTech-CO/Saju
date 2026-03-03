@@ -25,7 +25,8 @@
 
 ## 3. 설치 및 실행 (Quick Start)
 
-이 프로젝트는 빌드 도구가 없는 **순수 정적 사이트**입니다.  
+이 프로젝트는 빌드 도구가 없는 **순수 정적 사이트**입니다. [사주 보러가기](<https://jtech-co.github.io/Saju/index.html>)
+
 Node.js는 필수는 아니지만, 로컬 테스트나 wrangler 사용 시 필요할 수 있습니다.
 
 ### 3-1. 프로젝트 클론
@@ -119,3 +120,4 @@ npx serve .
 ## 6. 정보 (Info)
 
 - **License**: MIT 라이센스
+
