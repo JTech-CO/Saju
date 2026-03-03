@@ -61,6 +61,28 @@ document.addEventListener('DOMContentLoaded', function () {
         targetMonthSelect.options.add(new Option(`${i}월`, i));
     }
     targetMonthSelect.value = new Date().getMonth() + 1;
+
+    (function startSajuLoaderCycle() {
+        const desc = ['생장의 기운을 읽는 중…', '열정의 기운을 읽는 중…', '중화의 기운을 읽는 중…', '결실의 기운을 읽는 중…', '지혜의 기운을 읽는 중…'];
+        const items = document.querySelectorAll('#saju-loader .oh');
+        const txt = document.getElementById('saju-loader-text');
+        if (!items.length || !txt) return;
+        let i = 0;
+        function activate(idx) {
+            items.forEach(function (el) { el.classList.remove('active'); });
+            for (let n = 0; n < 5; n++) {
+                const line = document.getElementById('al-' + n);
+                if (line) line.classList.remove('active');
+            }
+            items[idx].classList.add('active');
+            var prev = idx === 0 ? 4 : idx - 1;
+            var line = document.getElementById('al-' + prev);
+            if (line) line.classList.add('active');
+            txt.textContent = desc[idx];
+        }
+        activate(0);
+        setInterval(function () { i = (i + 1) % 5; activate(i); }, 2000);
+    })();
 });
 
 document.querySelectorAll('#main-nav a').forEach(link => {
@@ -123,13 +145,13 @@ document.getElementById('saju-form').addEventListener('submit', async function (
     }
 
     const resultArea = document.getElementById('result-area');
-    const loadingState = document.getElementById('loading-state');
+    const sajuLoader = document.getElementById('saju-loader');
     const resultDisplay = document.getElementById('result-display');
     const resultTitle = document.getElementById('result-title');
     const resultText = document.getElementById('result-text');
 
     resultArea.style.display = 'block';
-    loadingState.style.display = 'block';
+    sajuLoader.style.display = 'flex';
     resultDisplay.style.display = 'none';
 
     const submitBtn = document.querySelector('.btn-submit');
@@ -158,11 +180,11 @@ document.getElementById('saju-form').addEventListener('submit', async function (
         resultTitle.textContent = titleStr;
         resultText.textContent = sajuResult;
 
-        loadingState.style.display = 'none';
+        sajuLoader.style.display = 'none';
         resultDisplay.style.display = 'block';
         resultArea.scrollIntoView({ behavior: 'smooth', block: 'start' });
     } catch (err) {
-        loadingState.style.display = 'none';
+        sajuLoader.style.display = 'none';
         alert('명식을 분석하는 중 오류가 발생하였습니다. 다시 시도해 주십시오.\n' + (err.message || ''));
         console.error(err);
     } finally {
