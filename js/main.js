@@ -3,6 +3,7 @@
  */
 let currentMenu = 'lifetime';
 let originalResultText = '';
+let cachedSimplifiedText = '';
 let isSimplified = false;
 
 /**
@@ -148,6 +149,7 @@ document.getElementById('saju-form').addEventListener('submit', async function (
         else if (currentMenu === 'date') titleStr = `${name} 님의 ${requestData.targetMonth}월 ${requestData.eventType} 택일 결과`;
 
         originalResultText = sajuResult;
+        cachedSimplifiedText = '';
         isSimplified = false;
         const simplifyBtn = document.getElementById('btn-simplify');
         simplifyBtn.style.display = 'block';
@@ -171,51 +173,39 @@ document.getElementById('saju-form').addEventListener('submit', async function (
 
 document.getElementById('btn-simplify').addEventListener('click', async function () {
     const resultText = document.getElementById('result-text');
+    const simplifyBtn = this;
 
     if (!isSimplified) {
-        this.textContent = '원본 풀이로 복구';
-        resultText.innerHTML = '<div style="text-align:center; color:#7a4b3a; margin: 40px 0; font-weight: bold; animation: blink 2s infinite;">AI가 어려운 명리학 용어를 현대어로 쉽게 풀이하고 있습니다...</div>';
+        simplifyBtn.textContent = '원본 풀이로 복구';
 
-        await new Promise(resolve => setTimeout(resolve, 1500));
+        function escapeHtml(s) {
+            return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        }
 
-        const easyText = originalResultText
-            .replace(/명식\(命式\)|명식/g, '사주(태어난 생년월일시)')
-            .replace(/생극제화\(生剋制化\)/g, '기운들의 상호작용(서로 돕고 견제하는 흐름)')
-            .replace(/용신\(用神\)/g, '나에게 가장 필요한 수호신 같은 기운')
-            .replace(/운로\(運路\)/g, '앞으로의 운의 흐름')
-            .replace(/천간\(天干\)/g, '겉으로 드러나는 기운(생각, 이상)')
-            .replace(/지지\(地支\)/g, '현실적으로 작용하는 기운(환경, 실천)')
-            .replace(/형살\(刑殺\)/g, '강하게 부딪히거나 조정해야 하는 기운')
-            .replace(/하심\(下心\)/g, '자신을 낮추고 양보하는 마음')
-            .replace(/재성\(財星\)/g, '재물과 결과를 만들어내는 기운')
-            .replace(/정재\(正財\)/g, '안정적이고 고정적인 수입')
-            .replace(/대운\(大運\)/g, '10년 단위로 크게 바뀌는 운의 흐름')
-            .replace(/관성\(官星\)/g, '명예, 직장, 책임감을 의미하는 기운')
-            .replace(/신수\(身數\)/g, '한 해의 개인적인 운세')
-            .replace(/구설수\(口舌數\)/g, '남의 입에 오르내리며 겪는 다툼')
-            .replace(/조후\(調候\)/g, '온도와 계절의 균형')
-            .replace(/육합\(六合\)/g, '서로 강하게 끌리고 합쳐지는 기운')
-            .replace(/원진\(怨嗔\)/g, '서로 미워하고 원망하는 기운')
-            .replace(/수리성명학 \(數理姓名學\)/g, '이름의 획수를 바탕으로 운을 보는 학문')
-            .replace(/원형이정\(元亨利貞\)/g, '사계절의 흐름처럼 일생의 4가지 단계')
-            .replace(/형격\(亨格\)/g, '청장년기의 운세')
-            .replace(/자원오행\(字源五行\)/g, '한자 자체가 가지고 있는 자연의 기운')
-            .replace(/희용신\(喜用神\)/g, '사주에서 가장 반갑고 필요한 좋은 기운')
-            .replace(/생기\(生氣\)/g, '활력이 넘치는 좋은 기운')
-            .replace(/천의\(天醫\)/g, '하늘이 돕는 치유와 구원의 기운')
-            .replace(/흉살\(凶殺\)/g, '불길하고 해로운 기운')
-            .replace(/천덕귀인\(天德貴人\)/g, '하늘의 덕을 받아 재난을 피하게 해주는 귀인')
-            .replace(/일진\(日辰\)/g, '그날그날의 운세')
-            .replace(/상충\(相沖\)/g, '강하게 부딪혀 깨지는 기운');
+        if (cachedSimplifiedText) {
+            resultText.innerHTML = `<div style="background-color: #fdfaf6; border: 1px dashed #cbb8a0; padding: 15px; margin-bottom: 20px; font-size: 14px; color: #665243;"><b>※ AI 용어 간소화 모드</b>: 일반인이 이해하기 쉬운 말로 풀어 쓴 버전입니다.</div>${escapeHtml(cachedSimplifiedText)}`;
+            isSimplified = true;
+            return;
+        }
 
-        // 간소화 모드에서는 한자가 나오지 않도록 남은 한자 제거
-        let simplifiedText = easyText.replace(/[\u4e00-\u9fff\u3400-\u4dbf]/g, '');
-        simplifiedText = simplifiedText.replace(/  +/g, ' ').trim();
+        resultText.innerHTML = '<div style="text-align:center; color:#7a4b3a; margin: 40px 0; font-weight: bold; animation: blink 2s infinite;">쉬운 말로 풀어 쓰는 중입니다. 잠시만 기다려 주십시오...</div>';
+        simplifyBtn.disabled = true;
 
-        resultText.innerHTML = `<div style="background-color: #fdfaf6; border: 1px dashed #cbb8a0; padding: 15px; margin-bottom: 20px; font-size: 14px; color: #665243;"><b>※ AI 용어 간소화 모드</b>: 어려운 한자어와 전문 명리 용어를 이해하기 쉬운 말로 풀어서 설명합니다.</div>${simplifiedText}`;
-        isSimplified = true;
+        try {
+            const raw = await requestGrokChat(SIMPLIFY_PROMPT, originalResultText);
+            const simplified = stripMarkdownFormatting(raw);
+            cachedSimplifiedText = simplified;
+            resultText.innerHTML = `<div style="background-color: #fdfaf6; border: 1px dashed #cbb8a0; padding: 15px; margin-bottom: 20px; font-size: 14px; color: #665243;"><b>※ AI 용어 간소화 모드</b>: 일반인이 이해하기 쉬운 말로 풀어 쓴 버전입니다.</div>${escapeHtml(simplified)}`;
+            isSimplified = true;
+        } catch (err) {
+            alert('간소화 중 오류가 발생하였습니다. 다시 시도해 주십시오.\n' + (err.message || ''));
+            resultText.textContent = originalResultText;
+            simplifyBtn.textContent = '어려운 용어 AI 간소화';
+        } finally {
+            simplifyBtn.disabled = false;
+        }
     } else {
-        this.textContent = '어려운 용어 AI 간소화';
+        simplifyBtn.textContent = '어려운 용어 AI 간소화';
         resultText.textContent = originalResultText;
         isSimplified = false;
     }
