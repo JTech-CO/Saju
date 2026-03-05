@@ -290,13 +290,21 @@ input[type="text"]:focus, select:focus {
 
 #saju-loader .arrows {
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    top: 0;
+    left: 0;
+    width: 240px;
+    height: 240px;
+    pointer-events: none;
     z-index: 1;
 }
 
-#saju-loader .arrows svg { overflow: visible; }
+#saju-loader .arrows svg {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    overflow: visible;
+}
 
 #saju-loader .arrows .al {
     stroke: #cbb8a0;
